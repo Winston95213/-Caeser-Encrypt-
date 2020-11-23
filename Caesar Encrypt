@@ -1,0 +1,112 @@
+  
+import pyperclip 
+import tkinter as tk
+from tkinter.ttk import Separator
+import time
+# import random as rd
+
+
+def st(): 
+    message = (msg_entry.get())
+    key = eval(key_entry.get())
+    st=time.perf_counter()
+    # delete()
+    # key = rd.randint(1,65)
+
+    SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 !?.'
+
+    translated = ''
+
+    for symbol in message:
+   
+        if symbol in SYMBOLS:
+            symbolIndex = SYMBOLS.find(symbol)
+            translatedIndex = symbolIndex + key
+             
+            if translatedIndex >= len(SYMBOLS):
+                translatedIndex = translatedIndex - len(SYMBOLS)
+            elif translatedIndex < 0:
+                    translatedIndex = translatedIndex + len(SYMBOLS)
+
+            translated = translated + SYMBOLS[translatedIndex]
+        else:
+                translated = translated + symbol
+    
+    et=time.perf_counter()
+    ut = et - st
+    encryption_label.configure(text="Translated: " + translated)
+    timer.configure(text="Spent Time:" + str(ut))
+    copy(translated)
+    delete()
+
+def delete():
+    msg_entry.delete(0, "end")
+    
+def copy(translated):
+    pyperclip.copy(translated)
+
+root = tk.Tk()
+root.title('Caeser Encrypt')
+root.geometry('800x1000+0+0')
+root.configure(background="black")
+
+title_label = tk.Label(root, text="*Caeser Encrypt*"
+                       , font="Helvetica 40", fg="white", bg = "black")
+title_label.pack()
+
+#using frame to distinguish different function
+#Title
+frame1 = tk.Frame(root)
+frame1.pack()
+title1_label = tk.Label(frame1, text="Science Fair",
+                        font="Helvetica 30", fg="white", bg = "black")
+title1_label.pack()
+
+name_label = tk.Label(frame1, text="by 9P Chang Winston"
+                      , font="Helvetica 18", fg="white", bg = "black")
+name_label.pack()
+
+#Entry
+lb = tk.LabelFrame(root, width="800", height="50"
+                   , text="Entry Box", font="Helvetica 35 ")
+
+secret_label = tk.Label(lb, text="Serect Messsage:"
+                        , font="Helvetica 25 bold", fg="blue")
+secret_label.pack()
+msg_entry = tk.Entry(lb, show="*")
+msg_entry.pack(pady="15")
+
+sep = Separator(lb, orient=tk.HORIZONTAL)
+sep.pack(fill=tk.X,padx=5)
+
+key_label = tk.Label(lb, text="Key:", fg="green"
+                        ,font="Helvetica 25 bold")
+key_label.pack(side=tk.LEFT)
+key_entry = tk.Entry(lb, bg="white", fg="black")
+key_entry.pack(side=tk.LEFT, padx="10")
+
+lb.pack(padx=50, pady=20, ipadx=50, ipady=30)
+
+#Show Result & Command
+frame3 = tk.Frame(root, bg="black")
+frame3.pack(pady=50)
+
+translated_label = tk.Label(frame3, font="Helvetica 25 bold",
+                            fg="light green", bg="black")
+translated_label.pack()
+encryption_label = tk.Label(frame3, fg="blue", bg="black",
+                            font="Helvetica 25 bold")
+encryption_label.pack()
+
+timer = tk.Label(root, fg="orange", bg="black" ,font="Helvetica 15")
+timer.pack()
+
+
+btn1 = tk.Button(root, text="Start Encrypt", command = st)
+btn1.pack(pady="10")
+
+btn2 = tk.Button(root, text="Copy Down", command = copy)
+btn2.pack(side=tk.RIGHT, padx="20")
+
+
+root.mainloop()
